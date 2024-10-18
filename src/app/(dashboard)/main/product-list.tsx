@@ -1,19 +1,51 @@
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input'
+import { Input } from '@/components/ui/input';
+import { BsBox } from "react-icons/bs";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import Image from 'next/image';
 
 const products = [
-    { id: 1, product: "Laptop", price: 1000, stock: 50 },
-    { id: 2, product: "Smartphone", price: 700, stock: 100 },
-    { id: 3, product: "Tablet", price: 300, stock: 75 },
-    { id: 4, product: "Headphones", price: 100, stock: 200 },
-    { id: 5, product: "Smartwatch", price: 250, stock: 150 }
-  ];
+    {
+      id: 1,
+      product: "Laptop",
+      price: 1000,
+      stock: 50,
+      description: "A high-performance laptop with a 15.6-inch display, 16GB RAM, and 512GB SSD, perfect for both work and entertainment."
+    },
+    {
+      id: 2,
+      product: "Smartphone",
+      price: 700,
+      stock: 100,
+      description: "A cutting-edge smartphone featuring a 6.5-inch AMOLED display, 128GB storage, and a triple-camera system for stunning photography."
+    },
+    {
+      id: 3,
+      product: "Tablet",
+      price: 300,
+      stock: 75,
+      description: "A lightweight tablet with a 10.1-inch display, 64GB storage, and long battery life, ideal for reading, browsing, and entertainment."
+    },
+    {
+      id: 4,
+      product: "Headphones",
+      price: 100,
+      stock: 200,
+      description: "Wireless over-ear headphones with noise cancellation and deep bass, providing a premium sound experience for music lovers."
+    },
+    {
+      id: 5,
+      product: "Smartwatch",
+      price: 250,
+      stock: 150,
+      description: "A sleek smartwatch with heart rate monitoring, GPS tracking, and a variety of fitness tracking features, compatible with both iOS and Android."
+    }
+  ];  
 
 const ThreeDots = () => {
     return (
         <Button variant={"ghost"} size={"sm"} className="h-6">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-0.5">
                 <div className="rounded-full bg-black w-[3px] h-[3px]"></div>
                 <div className="rounded-full bg-black w-[3px] h-[3px]"></div>
                 <div className="rounded-full bg-black w-[3px] h-[3px]"></div>
@@ -32,20 +64,25 @@ const ProductList = () => {
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader className="text-blue-400">
             <TableRow>
-                <TableHead>Image</TableHead>
+                <TableHead></TableHead>
                 <TableHead>Product</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Stocks</TableHead>
                 <TableHead></TableHead>
             </TableRow>
             </TableHeader>
-            <TableBody className="font-semibold">
+            <TableBody className="font-medium">
             {products.map((product) => (
                 <TableRow key={product.id}>
-                <TableCell className="font-medium">Hey</TableCell>
-                <TableCell>{ product.product }</TableCell>
+                <TableCell><Image src={`/avatars/default_product.webp`} alt='default product' width={40} height={40} className='rounded-lg'/></TableCell>
+                <TableCell>
+                    { product.product }
+                    <p className="text-xs text-zinc-400">{ product.description.length > 20 ? product.description.substring(0, 60) + "..." : product.description}</p>
+                </TableCell>
                 <TableCell>Rp. { product.price }</TableCell>
-                <TableCell>{ product.stock }</TableCell>
+                <TableCell >
+                    <div className="flex items-center gap-2"><BsBox/> { product.stock }</div>
+                </TableCell>
                 <TableCell align="right"><ThreeDots/></TableCell>
                 </TableRow>
             ))}
