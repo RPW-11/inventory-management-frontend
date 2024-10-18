@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
+
 
 const LoginForm = () => {
   const loginForm = useForm<z.infer<typeof loginFormSchema>>({
@@ -16,8 +18,10 @@ const LoginForm = () => {
         password: "123"
     }
   })
+  const router = useRouter()
   const onSubmitLogin = (values: z.infer<typeof loginFormSchema>) => {
     // console.log(values);
+    router.push("/main")
     
   }
 
