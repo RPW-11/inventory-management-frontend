@@ -1,3 +1,4 @@
+import Sidebar from '@/components/sidebar';
 import React from 'react'
 
 const DashboardLayout = ({
@@ -6,9 +7,12 @@ const DashboardLayout = ({
     children: React.ReactNode;
   }>) => {
     return(
-        <div className='p-10'>
-            { children }
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 px-4 bg-zinc-200">
+          {children}
         </div>
+      </div>
     );
   }
 

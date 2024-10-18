@@ -1,18 +1,9 @@
 import type { Metadata } from "next";
 import { COMPANY_NAME } from "../constants";
-import localFont from "next/font/local";
+import { Raleway } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const raleway = Raleway({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: COMPANY_NAME,
@@ -27,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-zinc-200 ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`bg-zinc-200 ${raleway.className} antialiased`}
       >
         {children}
       </body>
