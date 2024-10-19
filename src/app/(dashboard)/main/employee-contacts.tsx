@@ -11,11 +11,11 @@ const employees = [
 
 const EmployeeContacts = () => {
   return (
-    <div className="bg-white rounded-xl p-5 w-fit border">
+    <div className="bg-white rounded-xl p-5 w-full border">
         <h2 className="text-lg font-semibold">Employee Contacts</h2>
         <ul className="flex flex-col mt-2">
             { employees.map(employee => (
-                <div className="flex items-center justify-between w-72 rounded-lg p-2 flex text-sm font-medium cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md hover:shadow-amber-700/10" key={employee.id}>
+                <div className="flex items-center justify-between rounded-lg p-2 flex text-sm font-medium cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md hover:shadow-amber-700/10" key={employee.id}>
                     <div className="flex items-center gap-4">
                         <Image src={"/avatars/default_avatar.webp"} alt="profile_default" width={28} height={28} className="border rounded-md"/>
                         <div>

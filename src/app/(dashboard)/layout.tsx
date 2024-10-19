@@ -12,7 +12,7 @@ const DashboardLayout = ({
         <Sidebar />
         <div className="flex-1 bg-white">
           <Header/>
-          <div className="p-4 h-full">
+          <div className="p-4 overflow-y-auto">
             {children}
           </div>
         </div>
