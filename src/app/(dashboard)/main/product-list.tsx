@@ -58,10 +58,9 @@ const ProductList = () => {
     <div className="bg-white border rounded-xl px-7 py-5 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row max-w-[1000px] md:items-center justify-between gap-2">
             <h2 className="font-bold text-lg">Product List</h2>
-            <Input placeholder="Search product by name..." className="h-8 md:w-64 text-xs"/>
+            <Input placeholder="Search product by name..." className="h-8 md:w-64 text-xs rounded-lg bg-zinc-100 focus:bg-white"/>
         </div>
         <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader className="text-blue-400">
             <TableRow>
                 <TableHead></TableHead>

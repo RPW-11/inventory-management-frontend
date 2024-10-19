@@ -13,7 +13,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className={`${isOpen ? 'w-64' : 'w-[70px]'} bg-white h-screen text-black flex flex-col transition-all duration-300`}>
+    <div className={`${isOpen ? 'w-64' : 'w-[70px]'} bg-white h-screen text-black flex flex-col transition-all duration-300 border-r`}>
         <div className="w-full px-6 h-16 flex justify-between items-center">
             <h2 className={`${!isOpen && 'hidden'} text-md font-bold whitespace-nowrap`}>{ companyName }</h2>
             {isOpen ? <MdMenuOpen size={20} onClick={toggleSidebar} className="cursor-pointer text-zinc-400 hover:text-black"/> : <MdMenu size={20} onClick={toggleSidebar} className="cursor-pointer text-zinc-400 hover:text-black"/>}

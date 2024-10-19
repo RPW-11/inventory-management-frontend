@@ -11,7 +11,7 @@ const employees = [
 
 const EmployeeContacts = () => {
   return (
-    <div className="bg-white rounded-xl p-5 w-fit">
+    <div className="bg-white rounded-xl p-5 w-fit border">
         <h2 className="text-lg font-semibold">Employee Contacts</h2>
         <ul className="flex flex-col mt-2">
             { employees.map(employee => (

@@ -1,4 +1,5 @@
 import Sidebar from '@/components/sidebar';
+import Header from '@/components/header';
 import React from 'react'
 
 const DashboardLayout = ({
@@ -9,8 +10,11 @@ const DashboardLayout = ({
     return(
       <div className="flex">
         <Sidebar />
-        <div className="flex-1 px-4 bg-zinc-200">
-          {children}
+        <div className="flex-1 bg-white">
+          <Header/>
+          <div className="p-4 h-full">
+            {children}
+          </div>
         </div>
       </div>
     );
