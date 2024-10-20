@@ -1,7 +1,9 @@
-import { notFound } from "next/navigation"
+"use client"
+import { notFound, useRouter } from "next/navigation"
 import LoginForm from "./login-form"
 import SignupForm from "./signup-form"
 import Link from "next/link"
+import { useEffect } from "react"
 
 const AuthPage = ({ params }: { params: { slug: string } }) => {
   const pageType = params.slug
@@ -9,11 +11,17 @@ const AuthPage = ({ params }: { params: { slug: string } }) => {
   const footer = pageType === "sign-in" ? "Don't have an account?" : "Already have an account?"
   const otherPath = pageType === "sign-in" ? "/auth/sign-up" : "/auth/sign-in"
   const linkText = pageType === "sign-in" ? "Signup" : "Login"
-
+  const router = useRouter()
   if (pageType !== "sign-up" && pageType !== "sign-in" ) {
     return notFound()
   }
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('jwt_access_token');
+    if (accessToken) {
+      router.back()
+    }
+  }, []);
 
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center">

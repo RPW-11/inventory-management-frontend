@@ -19,6 +19,7 @@ const Sidebar = () => {
   const logout = () => {
     localStorage.removeItem("jwt_access_token")
     clearAccessToken()
+    router.push("/auth/sign-in")
   }
 
   return (

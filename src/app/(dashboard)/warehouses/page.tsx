@@ -1,13 +1,9 @@
 "use client"
 
-import { useAuthStore } from "@/contexts/useStore"
-import { redirect } from "next/navigation"
+import useAuth from "@/hooks/useAuth";
 
 const WarehousesPage = () => {
-  const { accessToken } = useAuthStore()
-  if (!accessToken) {
-    return redirect("/auth/sign-in")
-  }
+  useAuth();
   
   return (
     <div>WarehousesPage</div>
