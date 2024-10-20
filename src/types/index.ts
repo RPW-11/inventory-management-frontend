@@ -20,3 +20,17 @@ export type ProductDetail = {
     inventories: InventoryDetail[]
 }
 
+
+
+// APIs related types
+export type SignupResponse = {
+    accessToken: string,
+    refreshToken: string,
+    message: string | null
+}
+
+export type LoginResponse = {
+    accessToken: string,
+    refreshToken: string,
+    message: string | null
+}

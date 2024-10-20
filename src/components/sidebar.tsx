@@ -1,16 +1,22 @@
 "use client"
 import Link from "next/link";
 import { useState } from 'react';
-import { MdMenu, MdMenuOpen } from "react-icons/md";
+import { MdMenu, MdMenuOpen, MdLogout } from "react-icons/md";
 import { COMPANY_NAME as companyName, SIDEBAR_MENU as sidebarMenu } from "@/constants";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const pathName = usePathname()
+  const pathName = usePathname();
+  const router = useRouter();
+
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const logout = () => {
+    router.push("/auth/sign-in")
+  }
 
   return (
     <div className={`${isOpen ? 'w-64' : 'w-[70px]'} bg-white h-screen text-black flex flex-col transition-all duration-300 border-r`}>
@@ -39,6 +45,10 @@ const Sidebar = () => {
             ))
             }
         </nav>
+        <div className="px-6 py-2 mb-4 cursor-pointer text-zinc-400 hover:text-red-600 hover:bg-zinc-100 flex items-center gap-4 font-semibold text-sm" onClick={logout}>
+            <MdLogout size={20}/> 
+            { isOpen && "Logout" }
+        </div>
     </div>
   );
 };

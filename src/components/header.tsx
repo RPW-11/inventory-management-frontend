@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { MdNotificationsNone, MdAddCircle, MdLogout } from "react-icons/md";
+import { MdNotificationsNone, MdAddCircle } from "react-icons/md";
 import { Button } from "./ui/button";
 
 const Header = () => {

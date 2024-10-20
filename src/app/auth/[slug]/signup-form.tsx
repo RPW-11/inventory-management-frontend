@@ -1,6 +1,5 @@
 "use client"
-
-import { LOGIN_FORM_SCHEMA as loginFormSchema, SIGNUP_FORM_SCHEMA as signupFormSchema } from "@/constants";
+import { SIGNUP_FORM_SCHEMA as signupFormSchema } from "@/constants";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SignupResponse } from "@/types";
+import { useAuthStore } from "@/contexts/useStore";
+import { fetchApi } from "@/lib/utils";
 
 const SignupForm = () => {
   const signupForm = useForm<z.infer<typeof signupFormSchema>>({
@@ -19,9 +22,30 @@ const SignupForm = () => {
     }
   })
   const router = useRouter()
+  const { setAccessToken } = useAuthStore()
+  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  const onSubmitSignup = (values: z.infer<typeof signupFormSchema>) => {
-    // console.log(values);
+  const onSubmitSignup = async (values: z.infer<typeof signupFormSchema>) => {
+    setIsLoading(true)
+
+    const res = await fetchApi({
+      endPoint: "http://localhost:8080/v1/signup",
+      method: "POST",
+      body: JSON.stringify(values)
+    })
+
+    const { accessToken, refreshToken, message }: SignupResponse = await res.json()
+    if (!res.ok) {
+      setError(message)
+      return
+    }
+
+    setAccessToken(accessToken)
+    document.cookie = `refreshToken=${refreshToken}; HttpOnly; Secure; Path=/; SameSite=Strict`
+    setError(null)
+    setIsLoading(false)
+
     router.push("/main")
   }
 
@@ -76,7 +100,8 @@ const SignupForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Signup</Button>
+        <Button disabled={isLoading} type="submit">Signup</Button>
+        <p className="text-xs font-medium text-red-500 text-center">{ error }</p>
       </form>
     </Form>
   )

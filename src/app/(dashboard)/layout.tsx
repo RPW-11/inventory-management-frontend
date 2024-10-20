@@ -1,6 +1,5 @@
 import Sidebar from '@/components/sidebar';
 import Header from '@/components/header';
-import React from 'react'
 
 const DashboardLayout = ({
     children,
