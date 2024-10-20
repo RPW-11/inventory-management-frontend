@@ -1,7 +1,8 @@
 import { MdDashboard, MdAnalytics, MdFactory, MdSupervisedUserCircle } from "react-icons/md";
 import { z } from "zod";
 
-export const COMPANY_NAME = "Ryujin Jakka"
+export const COMPANY_NAME = process.env.NEXT_PUBLIC_COMPANY_NAME
+export const PUBLIC_API = process.env.NEXT_PUBLIC_API
 export const SIDEBAR_MENU = [
     {
         sectionName: "Menu",

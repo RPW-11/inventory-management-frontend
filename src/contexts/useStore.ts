@@ -7,7 +7,7 @@ type AuthState = {
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-    accessToken: null,
+    accessToken: typeof window !== 'undefined' ? localStorage.getItem('jwt_access_token') : null,
     setAccessToken: (token) => set({ accessToken: token }),
     clearAccessToken: () => set({ accessToken: null })
 }))

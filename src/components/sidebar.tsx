@@ -4,18 +4,21 @@ import { useState } from 'react';
 import { MdMenu, MdMenuOpen, MdLogout } from "react-icons/md";
 import { COMPANY_NAME as companyName, SIDEBAR_MENU as sidebarMenu } from "@/constants";
 import { usePathname, useRouter } from "next/navigation";
+import { useAuthStore } from "@/contexts/useStore";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const pathName = usePathname();
   const router = useRouter();
+  const { clearAccessToken } = useAuthStore()
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
   const logout = () => {
-    router.push("/auth/sign-in")
+    localStorage.removeItem("jwt_access_token")
+    clearAccessToken()
   }
 
   return (

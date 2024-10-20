@@ -3,6 +3,7 @@ export type Product = {
     name: string
     description: string
     price: number
+    stock?: number
     createdAt: Date
     updatedAt: Date
 }
@@ -21,16 +22,13 @@ export type ProductDetail = {
 }
 
 
-
 // APIs related types
 export type SignupResponse = {
     accessToken: string,
-    refreshToken: string,
     message: string | null
 }
 
 export type LoginResponse = {
     accessToken: string,
-    refreshToken: string,
     message: string | null
 }

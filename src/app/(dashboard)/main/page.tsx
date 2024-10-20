@@ -1,8 +1,17 @@
+"use client"
 import ProductList from "./product-list"
 import EmployeeContacts from "./employee-contacts"
 import Statistics from "./statistics"
+import { useAuthStore } from "@/contexts/useStore"
+import { redirect } from "next/navigation"
+
   
 const MainPage = () => {
+  const { accessToken } = useAuthStore()
+  if (!accessToken) {
+    return redirect("/auth/sign-in")
+  }
+  
   return (
     <div className="bg-white grid grid-cols-6 h-full gap-4">
        <div className="col-span-4 flex flex-col gap-4">

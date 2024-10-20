@@ -1,46 +1,13 @@
+"use client"
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BsBox } from "react-icons/bs";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Image from 'next/image';
-
-const products = [
-    {
-      id: 1,
-      product: "Laptop",
-      price: 1000,
-      stock: 50,
-      description: "A high-performance laptop with a 15.6-inch display, 16GB RAM, and 512GB SSD, perfect for both work and entertainment."
-    },
-    {
-      id: 2,
-      product: "Smartphone",
-      price: 700,
-      stock: 100,
-      description: "A cutting-edge smartphone featuring a 6.5-inch AMOLED display, 128GB storage, and a triple-camera system for stunning photography."
-    },
-    {
-      id: 3,
-      product: "Tablet",
-      price: 300,
-      stock: 75,
-      description: "A lightweight tablet with a 10.1-inch display, 64GB storage, and long battery life, ideal for reading, browsing, and entertainment."
-    },
-    {
-      id: 4,
-      product: "Headphones",
-      price: 100,
-      stock: 200,
-      description: "Wireless over-ear headphones with noise cancellation and deep bass, providing a premium sound experience for music lovers."
-    },
-    {
-      id: 5,
-      product: "Smartwatch",
-      price: 250,
-      stock: 150,
-      description: "A sleek smartwatch with heart rate monitoring, GPS tracking, and a variety of fitness tracking features, compatible with both iOS and Android."
-    }
-  ];  
+import { useEffect, useState } from 'react';
+import { fetchApi } from '@/lib/utils';
+import { useAuthStore } from '@/contexts/useStore';
+import { Product, ProductDetail } from '@/types';
 
 const ThreeDots = () => {
     return (
@@ -54,6 +21,44 @@ const ThreeDots = () => {
     )
 }  
 const ProductList = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string|null>(null)
+  const [products, setProducts] = useState<Product[]>([])
+  const { accessToken } = useAuthStore()
+
+  const fetchProductDetails = async () => {
+    const res = await fetchApi({
+      method: "GET",
+      path: "/product-inventory",
+      accessToken
+    })
+    const payload = await res.json()
+    if (!res.ok) {
+      setError(payload.message)
+      setIsLoading(false)
+      return
+    }
+
+    setProducts(payload.map((productDetail:ProductDetail) => {
+      const stock = productDetail.inventories.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.productQuantity
+      }, 0)
+      const newProduct: Product = {...productDetail.product, stock}
+      return newProduct
+    }))
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchProductDetails()
+  },[])
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-48 animate-pulse bg-zinc-200 rounded-xl"></div>
+    )
+  }
+
   return (
     <div className="bg-white border rounded-xl px-7 py-5 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row max-w-[1000px] md:items-center justify-between gap-2">
@@ -75,7 +80,7 @@ const ProductList = () => {
                 <TableRow key={product.id}>
                 <TableCell><Image src={`/avatars/default_product.webp`} alt='default product' width={40} height={40} className='rounded-lg'/></TableCell>
                 <TableCell>
-                    { product.product }
+                    { product.name }
                     <p className="text-xs text-zinc-400">{ product.description.length > 20 ? product.description.substring(0, 60) + "..." : product.description}</p>
                 </TableCell>
                 <TableCell>Rp. { product.price }</TableCell>

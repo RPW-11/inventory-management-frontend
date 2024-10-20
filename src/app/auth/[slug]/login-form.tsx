@@ -29,19 +29,20 @@ const LoginForm = () => {
     setIsLoading(true)
 
     const res = await fetchApi({
-      endPoint: "http://localhost:8080/v1/login",
+      path: "/login",
       method: "POST",
       body: JSON.stringify(values)
     })
 
-    const { accessToken, refreshToken, message }: SignupResponse = await res.json()
+    const { accessToken, message }: SignupResponse = await res.json()
     if (!res.ok) {
       setError(message)
+      setIsLoading(false)
       return
     }
 
+    localStorage.setItem("jwt_access_token", accessToken)
     setAccessToken(accessToken)
-    document.cookie = `refreshToken=${refreshToken}; HttpOnly; Secure; Path=/; SameSite=Strict`
     setError(null)
     setIsLoading(false)
 
@@ -83,7 +84,7 @@ const LoginForm = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Login</Button>
+        <Button disabled={isLoading} type="submit">Login</Button>
         <p className="text-xs font-medium text-red-500 text-center">{ error }</p>
       </form>
     </Form>

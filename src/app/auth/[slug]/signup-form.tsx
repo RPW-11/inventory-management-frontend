@@ -30,19 +30,20 @@ const SignupForm = () => {
     setIsLoading(true)
 
     const res = await fetchApi({
-      endPoint: "http://localhost:8080/v1/signup",
+      path: "/signup",
       method: "POST",
       body: JSON.stringify(values)
     })
 
-    const { accessToken, refreshToken, message }: SignupResponse = await res.json()
+    const { accessToken, message }: SignupResponse = await res.json()
     if (!res.ok) {
       setError(message)
+      setIsLoading(false)
       return
     }
 
+    localStorage.setItem("jwt_access_token", accessToken)
     setAccessToken(accessToken)
-    document.cookie = `refreshToken=${refreshToken}; HttpOnly; Secure; Path=/; SameSite=Strict`
     setError(null)
     setIsLoading(false)
 
