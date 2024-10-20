@@ -2,7 +2,7 @@ import Link from "next/link"
 
 const Statistics = () => {
   return (
-    <div className="w-full flex items-center gap-2 justify-between max-w-2xl mx-auto">
+    <div className="w-full flex items-center gap-2 justify-between w-full mx-auto">
         <div className="rounded-xl bg-amber-700 text-white h-36 w-full p-3 flex flex-col justify-between font-medium">
             <h3 className="text-xs">Recent activity</h3>
             <p className="font-semibold text-lg">13 have been sold successfuly</p>

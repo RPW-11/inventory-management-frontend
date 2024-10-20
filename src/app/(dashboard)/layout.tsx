@@ -9,9 +9,9 @@ const DashboardLayout = ({
     return(
       <div className="flex">
         <Sidebar />
-        <div className="flex-1 bg-white">
+        <div className="flex-1 flex flex-col bg-white max-h-screen overflow-hidden">
           <Header/>
-          <div className="p-4 overflow-y-auto">
+          <div className="flex-1 p-4 overflow-y-auto">
             {children}
           </div>
         </div>

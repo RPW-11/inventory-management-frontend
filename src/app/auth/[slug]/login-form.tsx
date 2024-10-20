@@ -8,7 +8,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { fetchApi } from "@/lib/utils";
+import { useFetchApi } from "@/hooks/useFetch";
 import { SignupResponse } from "@/types";
 import { useAuthStore } from "@/contexts/useStore";
 
@@ -24,6 +24,7 @@ const LoginForm = () => {
   const { setAccessToken } = useAuthStore()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const fetchApi = useFetchApi()
   
   const onSubmitLogin = async (values: z.infer<typeof loginFormSchema>) => {
     setIsLoading(true)

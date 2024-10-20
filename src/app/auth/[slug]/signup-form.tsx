@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SignupResponse } from "@/types";
 import { useAuthStore } from "@/contexts/useStore";
-import { fetchApi } from "@/lib/utils";
+import { useFetchApi } from "@/hooks/useFetch";
 
 const SignupForm = () => {
   const signupForm = useForm<z.infer<typeof signupFormSchema>>({
@@ -25,6 +25,7 @@ const SignupForm = () => {
   const { setAccessToken } = useAuthStore()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const fetchApi = useFetchApi()
 
   const onSubmitSignup = async (values: z.infer<typeof signupFormSchema>) => {
     setIsLoading(true)

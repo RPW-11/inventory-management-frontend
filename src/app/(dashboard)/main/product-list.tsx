@@ -5,7 +5,7 @@ import { BsBox } from "react-icons/bs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { fetchApi } from '@/lib/utils';
+import { useFetchApi } from '@/hooks/useFetch';
 import { useAuthStore } from '@/contexts/useStore';
 import { Product, ProductDetail } from '@/types';
 
@@ -25,6 +25,7 @@ const ProductList = () => {
   const [error, setError] = useState<string|null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const { accessToken } = useAuthStore()
+  const fetchApi = useFetchApi()
 
   const fetchProductDetails = async () => {
     const res = await fetchApi({
@@ -60,15 +61,17 @@ const ProductList = () => {
   }
 
   return (
-    <div className="bg-white border rounded-xl px-7 py-5 flex flex-col gap-4">
+    <div className="bg-white border rounded-2xl px-7 py-5 flex flex-col gap-4">
         <div className="flex flex-col md:flex-row max-w-[1000px] md:items-center justify-between gap-2">
-            <h2 className="font-bold text-lg">Product List</h2>
-            <Input placeholder="Search product by name..." className="h-8 md:w-64 text-xs rounded-lg bg-zinc-100 focus:bg-white"/>
+            <div>
+              <h2 className="font-semibold text-lg">Product List</h2>
+              <p className="text-xs">This table shows the recently updated products</p>
+            </div>
+            <Input placeholder="Search product by name..." className="md:w-64 text-xs rounded-lg bg-zinc-100 focus:bg-white shadow-none border-none"/>
         </div>
         <Table>
             <TableHeader className="text-blue-400">
             <TableRow>
-                <TableHead></TableHead>
                 <TableHead>Product</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Stocks</TableHead>
@@ -78,10 +81,12 @@ const ProductList = () => {
             <TableBody className="font-medium">
             {products.map((product) => (
                 <TableRow key={product.id}>
-                <TableCell><Image src={`/avatars/default_product.webp`} alt='default product' width={40} height={40} className='rounded-lg'/></TableCell>
-                <TableCell>
-                    { product.name }
-                    <p className="text-xs text-zinc-400">{ product.description.length > 20 ? product.description.substring(0, 60) + "..." : product.description}</p>
+                <TableCell className='flex gap-4 items-center'>
+                  <Image src={`/avatars/default_product.webp`} alt='default product' width={40} height={40} className='rounded-lg'/>
+                    <div>
+                      { product.name }
+                      <p className="text-xs text-zinc-400">{ product.description.length > 20 ? product.description.substring(0, 60) + "..." : product.description}</p>
+                    </div>
                 </TableCell>
                 <TableCell>Rp. { product.price }</TableCell>
                 <TableCell >

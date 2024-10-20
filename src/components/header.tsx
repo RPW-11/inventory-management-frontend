@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className="h-18 p-4 border-b w-full flex items-center justify-between max-w-screen-2xl">
+    <div className="sticky top-0 z-10 h-18 p-4 border-b w-full flex items-center justify-between max-w-screen-2xl">
         <div className="flex items-center gap-4">
             <Image
                 src={"/avatars/default_avatar.webp"}
@@ -19,8 +19,8 @@ const Header = () => {
             </div>
         </div>
         <div className="flex items-center gap-2">
-            <div className="p-1 rounded-lg border text-amber-700 cursor-pointer hover:bg-zinc-100">
-                <MdNotificationsNone size={22}/>
+            <div className="p-1.5 bg-zinc-100 hover:bg-white rounded-lg hover:border text-zinc-400 hover:text-amber-700 cursor-pointer hover:bg-zinc-100">
+                <MdNotificationsNone size={18}/>
             </div>
             <Button size={"sm"} variant={"outline"} className="flex items-center">Add new product <MdAddCircle className="text-amber-700"/></Button>
         </div>
