@@ -9,6 +9,7 @@ import { useAuthStore } from "@/contexts/useStore";
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
   const pathName = usePathname();
+  
   const router = useRouter();
   const { clearAccessToken } = useAuthStore()
 
@@ -35,10 +36,10 @@ const Sidebar = () => {
                     <ul className="flex flex-col gap-4">
                         { menu.contents.map(content => (
                             <li className="relative" key={content.url}>
-                                <div className={`rounded-full w-2 absolute -left-1 h-full bg-amber-700 ${pathName.split("/")[1] !== content.url.toLowerCase() && "hidden"}`}></div>
-                                <Link href={content.url} className={`block px-6 py-2 hover:bg-zinc-100 rounded ${pathName.split("/")[1] !== content.url.toLowerCase() && "text-zinc-400"}`}>
+                                <div className={`rounded-full w-2 absolute -left-1 h-full bg-amber-700 ${!pathName.startsWith(content.url) && "hidden"}`}></div>
+                                <Link href={content.url} className={`block px-6 py-2 hover:bg-zinc-100 rounded ${!pathName.startsWith(content.url) && "text-zinc-400"}`}>
                                     <div className="flex items-center gap-4">
-                                        <content.icon size={20} className={`${pathName.split("/")[1] !== content.url.toLowerCase() ? "text-zinc-400" : "text-amber-700"}`}/>
+                                        <content.icon size={20} className={`${!pathName.startsWith(content.url) ? "text-zinc-400" : "text-amber-700"}`}/>
                                         { isOpen && content.name }
                                     </div>
                                 </Link>
