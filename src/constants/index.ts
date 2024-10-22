@@ -51,7 +51,7 @@ export const PRODUCT_FORM_SCHEMA = z.object({
     productDescription: z.string().min(1, {message: "Product description must not be empty"}),
     productPrice: z.coerce.number().min(1, {message: "Product price cannot be negative or zero"}),
     productQuantity: z.coerce.number().min(1, {message: "Product quantity cannot be negative or zero"}),
-    warehouseName: z.string().min(1, {message: "Warehouse must not be empty"}),
+    warehouseId: z.string().min(1, {message: "Warehouse must not be empty"}),
     productImages: z.array(
         z.custom<File>(val => val instanceof File, 'Please upload a file')
         .refine((file) => (file.type === "image/jpeg" || file.type === "image/png"), "Invalid File!")

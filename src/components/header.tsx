@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 const Header = () => {
   return (
-    <div className="sticky top-0 z-10 h-18 p-4 border-b w-full flex items-center justify-between max-w-screen-2xl">
+    <div className="sticky top-0 z-10 h-18 p-4 border-b w-full flex items-center justify-between">
         <div className="flex items-center gap-4">
             <Image
                 src={"/avatars/default_avatar.webp"}

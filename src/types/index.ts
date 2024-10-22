@@ -4,8 +4,16 @@ export type Product = {
     description: string
     price: number
     stock?: number
-    createdAt: Date
-    updatedAt: Date
+    createdAt?: Date
+    updatedAt?: Date
+}
+
+export type Warehouse = {
+    id: string,
+    name: string,
+    address: string,
+    createdAt?: Date,
+    updatedAt?: Date
 }
 
 export type InventoryDetail = {

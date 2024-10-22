@@ -7,8 +7,23 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { Product, Warehouse } from "@/types";
+import { useFetchApi } from "@/hooks/useFetch";
+import { useAuthStore } from "@/contexts/useStore";
+import SearchResults from "@/components/search-results";
 
 const UpdateProductForm = () => {
+    const [searchWarehouseString, setSearchWarehouseString] = useState<string>("")
+    const [warehouse, setWarehouse] = useState<Warehouse>({
+        id: "",
+        name: "",
+        address: ""
+    })
+    const [warehouses, setWarehouses] = useState<Warehouse[]>([])
+    const fetchApi = useFetchApi()
+    const { accessToken } = useAuthStore()
+
     const updateProductForm = useForm<z.infer<typeof productFormSchema>>({
         resolver: zodResolver(productFormSchema),
     })
@@ -17,6 +32,40 @@ const UpdateProductForm = () => {
     const onSubmitUpdate = async (values: z.infer<typeof productFormSchema>) => {
         console.log(values);
     }
+
+    const onClickWarehouse = (warehouse: Warehouse) =>  {
+        setWarehouse(warehouse)
+        setWarehouses([])
+    }
+
+    const searchWarehouse = async () => {
+        if (searchWarehouseString !== "" ){
+            const res = await fetchApi({
+                method: "GET",
+                path: `/warehouse?name=${searchWarehouseString}`,
+                accessToken
+            })
+            if (!res.ok) {
+                // do something with the error
+                return
+            }
+            const payload:Warehouse[] = await res.json()
+            setWarehouses(payload)
+            return
+        }
+        setWarehouses([])
+    }
+
+    const onChangeWarehouse = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchWarehouseString(event.target.value)
+        const newWarehouse = warehouse
+        newWarehouse.name = event.target.value
+        setWarehouse(newWarehouse)
+    }
+
+    useEffect(() => {
+        searchWarehouse()
+    }, [searchWarehouseString])
 
   return (
     <Form {...updateProductForm}>
@@ -87,13 +136,25 @@ const UpdateProductForm = () => {
             />
             <FormField
             control={updateProductForm.control}
-            name="warehouseName"
+            name="warehouseId"
             render={({ field }) => (
                 <FormItem>
                 <FormLabel>Warehouse</FormLabel>
                 <FormControl>
-                    <Input placeholder="Enter warehouses..." {...field} type="text"/>
+                    <Input placeholder="Enter warehouses..." 
+                    {...field} 
+                    value={warehouse.name}
+                    type="text" 
+                    onChange={(e) => {
+                        onChangeWarehouse(e)
+                        field.onChange("")
+                    }}/>
                 </FormControl>
+                <SearchResults results={warehouses} 
+                onClickResult={(value:any) => {
+                    onClickWarehouse(value as Warehouse)
+                    field.onChange((value as Warehouse).id)
+                }}/>
                 <FormDescription>
                     Enter the warehouse in which the product will be stored
                 </FormDescription>

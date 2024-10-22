@@ -9,7 +9,7 @@ const AddUpdateProductPage = ({ params }: { params: { slug: string[] } }) => {
     const title = params.slug[0] === "add" ? "Add products to your inventory" : "Modify products from your inventory"
     const description = "Click the \"New Entry\" to add more products"
     return (
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 w-full max-w-screen-lg m-auto'>
           <BreadCrumb />
           <div className="flex flex-col gap-5">
               <div className="flex flex-col">
