@@ -8,9 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import WarehouseAddForm from "./warehouse-add";
+import ProductAdd from "./product-add";
+import { Product } from "@/types";
+import { useState } from "react";
 
 
 const UpdateProductForm = () => {
+    const [product, setProduct] = useState<Product>()
     const updateProductForm = useForm<z.infer<typeof productFormSchema>>({
         resolver: zodResolver(productFormSchema),
         defaultValues: {
@@ -27,28 +31,22 @@ const UpdateProductForm = () => {
     })
 
     const onSubmitUpdate = async (values: z.infer<typeof productFormSchema>) => {
-        console.log(values);
+        let combinedValues:any = {
+            ...values
+        }
+        if (product) {
+            combinedValues = {
+                productId: product.id,
+                ...values
+            }
+        }
+        console.log(combinedValues);
     }
 
   return (
     <Form {...updateProductForm}>
       <form onSubmit={updateProductForm.handleSubmit(onSubmitUpdate)} className="space-y-4">
-            <FormField
-            control={updateProductForm.control}
-            name="productName"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Product Name</FormLabel>
-                <FormControl>
-                    <Input placeholder="Enter or search your product..." {...field} />
-                </FormControl>
-                <FormDescription>
-                    If your product doesn't appear, it will create a new one
-                </FormDescription>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
+            <ProductAdd updateProductForm={updateProductForm} setProduct={setProduct}/>
             <FormField
             control={updateProductForm.control}
             name="productDescription"

@@ -29,6 +29,7 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
         name: "",
         address: ""
     })
+    const [error, setError] = useState<string|null>(null)
     const fetchApi = useFetchApi()
     const { accessToken } = useAuthStore()
 
@@ -47,11 +48,12 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
                 accessToken
             })
             if (!res.ok) {
-                // do something with the error
+                setError("An error has occured")
                 return
             }
             const payload:Warehouse[] = await res.json()
             setSearchResults(payload)
+            setError(null)
             return
         }
         setSearchResults([])
@@ -65,6 +67,12 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
     useEffect(() => {
         searchWarehouse()
     }, [searchWarehouseString])
+
+    if (error) {
+        return (
+            <div className="m-auto text-red-500 text-sm font-medium">{ error }</div>
+        )
+    }
 
   return (
     <div className="grid grid-cols-6 gap-7">
@@ -85,11 +93,13 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
                         field.onChange("")
                     }}/>
                 </FormControl>
-                <SearchResults results={searchResults} 
-                onClickResult={(value:any) => {
-                    onClickWarehouse(value as Warehouse)
-                    field.onChange((value as Warehouse).id)
-                }}/>
+                <div className={`${searchResults.length == 0 && "hidden"} rounded-md border p-1 flex flex-wrap`}>
+                    <SearchResults results={searchResults} type="warehouse"
+                    onClickResult={(value:any) => {
+                        onClickWarehouse(value as Warehouse)
+                        field.onChange((value as Warehouse).id)
+                    }}/>
+                </div>
                 <FormDescription>
                     Enter the warehouse in which the product will be stored
                 </FormDescription>
