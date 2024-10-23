@@ -62,7 +62,7 @@ const ProductList = () => {
 
   return (
     <div className="bg-white border rounded-2xl px-7 py-5 flex flex-col gap-4">
-        <div className="flex flex-col md:flex-row max-w-[1000px] md:items-center justify-between gap-2">
+        <div className="flex flex-col md:flex-row max-w-[1000px] md:items-center justify-between gap-4">
             <div>
               <h2 className="font-semibold text-lg">Product List</h2>
               <p className="text-xs">This table shows the recently updated products</p>

@@ -8,7 +8,7 @@ interface SearchResultsProps {
 
 const SearchResults = ({ results, onClickResult }: SearchResultsProps) => {
   return (
-    <div className="rounded-md">
+    <div className={`${results.length == 0 && "hidden"} rounded-md border p-1 flex flex-wrap`}>
         { results.map(res => (
             <Button variant={"ghost"} size={"sm"} className="text-xs" key={res.id} onClick={() => onClickResult(res)}>
                 { res.name }

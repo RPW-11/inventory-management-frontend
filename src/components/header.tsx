@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { MdNotificationsNone, MdAddCircle } from "react-icons/md";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -22,7 +23,9 @@ const Header = () => {
             <div className="p-1.5 bg-zinc-100 hover:bg-white rounded-lg hover:border text-zinc-400 hover:text-amber-700 cursor-pointer hover:bg-zinc-100">
                 <MdNotificationsNone size={18}/>
             </div>
-            <Button size={"sm"} variant={"outline"} className="flex items-center">Add new product <MdAddCircle className="text-amber-700"/></Button>
+            <Link href={"/products/add"}>
+                <Button size={"sm"} variant={"outline"} className="flex items-center">Add new product <MdAddCircle className="text-amber-700"/></Button>
+            </Link>
         </div>
     </div>
   )

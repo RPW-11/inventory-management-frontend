@@ -50,8 +50,10 @@ export const PRODUCT_FORM_SCHEMA = z.object({
     productName: z.string().min(3, {message: "Product name must be at least 3 characters long"}),
     productDescription: z.string().min(1, {message: "Product description must not be empty"}),
     productPrice: z.coerce.number().min(1, {message: "Product price cannot be negative or zero"}),
-    productQuantity: z.coerce.number().min(1, {message: "Product quantity cannot be negative or zero"}),
-    warehouseId: z.string().min(1, {message: "Warehouse must not be empty"}),
+    inventory: z.array(z.object({
+        warehouseId: z.string().min(1, {message: "Warehouse must not be empty"}),
+        productQuantity: z.coerce.number().min(1, {message: "Product quantity cannot be negative or zero"})
+    })),
     productImages: z.array(
         z.custom<File>(val => val instanceof File, 'Please upload a file')
         .refine((file) => (file.type === "image/jpeg" || file.type === "image/png"), "Invalid File!")
