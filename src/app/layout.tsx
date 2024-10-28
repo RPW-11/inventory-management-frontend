@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { COMPANY_NAME } from "../constants";
 import { Raleway } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css";
 
 const raleway = Raleway({ subsets: ['latin'] })
@@ -21,6 +22,7 @@ export default function RootLayout({
         className={`bg-zinc-200 ${raleway.className} antialiased`}
       >
         {children}
+        <Toaster/>
       </body>
     </html>
   );

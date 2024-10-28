@@ -11,23 +11,35 @@ import WarehouseAddForm from "./warehouse-add";
 import ProductAdd from "./product-add";
 import { Product } from "@/types";
 import { useState } from "react";
+import { useFetchApi } from "@/hooks/useFetch";
+import { useAuthStore } from "@/contexts/useStore";
+import { toast } from "sonner";
 
 
 const UpdateProductForm = () => {
     const [product, setProduct] = useState<Product>()
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const fetchApi = useFetchApi()
+    const { accessToken } = useAuthStore()
+
+    const defaultValuesForm = {
+        productName: "",
+        productDescription: "",
+        productPrice: 0,
+        warehouses: [{
+            warehouseId: "",
+            productQuantity: 1
+        }],
+        productImages: []
+    }
     const updateProductForm = useForm<z.infer<typeof productFormSchema>>({
         resolver: zodResolver(productFormSchema),
-        defaultValues: {
-            inventory: [{
-                warehouseId: "",
-                productQuantity: 1
-            }]
-        }
+        defaultValues: defaultValuesForm
     })
 
     const { fields, append, remove } = useFieldArray({
         control: updateProductForm.control,
-        name: "inventory"
+        name: "warehouses"
     })
 
     const onSubmitUpdate = async (values: z.infer<typeof productFormSchema>) => {
@@ -40,7 +52,23 @@ const UpdateProductForm = () => {
                 ...values
             }
         }
-        console.log(combinedValues);
+
+        setIsLoading(true)
+        fetchApi({
+            method: "POST",
+            body: JSON.stringify(combinedValues),
+            accessToken,
+            path: "/inventory"
+        }).then(res => {
+            if (!res.ok) {
+                toast.error("Failed to add the product")
+                return
+            }
+            updateProductForm.reset(defaultValuesForm)
+            toast.success("Product has been added successfully", {
+                description: new Date().toISOString()
+            })
+        }).finally(() => setIsLoading(false))
     }
 
   return (
@@ -110,7 +138,7 @@ const UpdateProductForm = () => {
                 </FormItem>
             )}
             />
-            <Button type="submit">Update Product</Button>
+            <Button type="submit" disabled={isLoading}>Update Product</Button>
       </form>
     </Form>
   )

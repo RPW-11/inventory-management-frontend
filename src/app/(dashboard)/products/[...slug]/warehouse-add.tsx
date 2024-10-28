@@ -12,7 +12,7 @@ interface Props {
         productName: string;
         productDescription: string;
         productPrice: number;
-        inventory: {
+        warehouses: {
             warehouseId: string;
             productQuantity: number;
         }[];
@@ -79,7 +79,7 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
         <div className="col-span-4">
         <FormField
             control={updateProductForm.control}
-            name={`inventory.${index}.warehouseId`}
+            name={`warehouses.${index}.warehouseId`}
             render={({ field }) => (
                 <FormItem>
                 <FormLabel>Warehouse</FormLabel>
@@ -111,7 +111,7 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
         <div className="col-span-2">    
         <FormField
             control={updateProductForm.control}
-            name={`inventory.${index}.productQuantity`}
+            name={`warehouses.${index}.productQuantity`}
             render={({ field }) => (
                 <FormItem>
                 <FormLabel>Product's Quantity</FormLabel>

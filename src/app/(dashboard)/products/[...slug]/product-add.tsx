@@ -12,7 +12,7 @@ interface Props {
         productName: string;
         productDescription: string;
         productPrice: number;
-        inventory: {
+        warehouses: {
             warehouseId: string;
             productQuantity: number;
         }[];

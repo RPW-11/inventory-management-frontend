@@ -50,7 +50,7 @@ export const PRODUCT_FORM_SCHEMA = z.object({
     productName: z.string().min(3, {message: "Product name must be at least 3 characters long"}),
     productDescription: z.string().min(1, {message: "Product description must not be empty"}),
     productPrice: z.coerce.number().min(1, {message: "Product price cannot be negative or zero"}),
-    inventory: z.array(z.object({
+    warehouses: z.array(z.object({
         warehouseId: z.string().min(1, {message: "Warehouse must not be empty"}),
         productQuantity: z.coerce.number().min(1, {message: "Product quantity cannot be negative or zero"})
     })),
