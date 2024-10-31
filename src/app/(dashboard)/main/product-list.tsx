@@ -44,7 +44,8 @@ const ProductList = () => {
       const stock = productDetail.inventories.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.productQuantity
       }, 0)
-      const newProduct: Product = {...productDetail.product, stock}
+      const imgUrl = productDetail.imageUrls.length > 0 ? productDetail.imageUrls[0] : undefined
+      const newProduct: Product = {...productDetail.product, stock, imageUrl: imgUrl}
       return newProduct
     }))
     setIsLoading(false)
@@ -82,7 +83,14 @@ const ProductList = () => {
             {products.map((product) => (
                 <TableRow key={product.id}>
                 <TableCell className='flex gap-4 items-center'>
-                  <Image src={`/avatars/default_product.webp`} alt='default product' width={40} height={40} className='rounded-lg'/>
+                  <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                    <Image 
+                      src={product.imageUrl ? product.imageUrl : `/avatars/default_product.webp`} 
+                      alt='default product' 
+                      layout='fill'
+                      objectFit='cover'
+                    />
+                  </div>
                     <div>
                       { product.name }
                       <p className="text-xs text-zinc-400">{ product.description.length > 20 ? product.description.substring(0, 60) + "..." : product.description}</p>

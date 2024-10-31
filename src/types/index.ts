@@ -4,8 +4,18 @@ export type Product = {
     description: string
     price: number
     stock?: number
+    imageUrl?: string
     createdAt?: Date
     updatedAt?: Date
+}
+
+export type User = {
+    id: string
+    fullName: string
+    email: string
+    position: string
+    createdAt: string
+    updatedAt: string
 }
 
 export type Warehouse = {
@@ -27,6 +37,7 @@ export type InventoryDetail = {
 export type ProductDetail = {
     product: Product
     inventories: InventoryDetail[]
+    imageUrls: string[]
 }
 
 

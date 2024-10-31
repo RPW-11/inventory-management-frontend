@@ -1,15 +1,46 @@
+"use client"
+import { useAuthStore } from "@/contexts/useStore";
+import { useFetchApi } from "@/hooks/useFetch";
+import { User } from "@/types";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { MdOutlineWhatsapp, MdMailOutline } from "react-icons/md";
-
-const employees = [
-    { id: 1, name: "John Doe", position: "Manager", phoneNumber: "123-456-7890" },
-    { id: 2, name: "Jane Smith", position: "Staff", phoneNumber: "987-654-3210" },
-    { id: 3, name: "Michael Johnson", position: "CEO", phoneNumber: "555-1212" },
-    { id: 4, name: "Emily Davis", position: "Staff", phoneNumber: "777-888-9999" },
-    { id: 7, name: "Noah Brown", position: "Staff", phoneNumber: "333-222-1111" }
-  ];
+import { toast } from "sonner";
 
 const EmployeeContacts = () => {
+    const [employees, setEmployees] = useState<User[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const { accessToken } = useAuthStore()
+    const fetchApi = useFetchApi()
+
+    const getContacts = async () => {
+        const res = await fetchApi({
+            path: "/user",
+            method: "GET",
+            accessToken
+        })
+
+        const payload = await res.json()
+        if (!res.ok) {
+            toast.error("An error has occured", {
+                description: payload.message
+            })
+        } else {
+            setEmployees(payload as User[])
+        }
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        getContacts()
+    }, [])
+
+    if (isLoading) {
+        return(
+            <div className="bg-zinc-800 rounded-xl h-64 w-full border text-white animate-pulse"></div>
+        )
+    }
+
   return (
     <div className="bg-zinc-800 rounded-xl p-5 w-full border text-white">
         <div>
@@ -22,7 +53,7 @@ const EmployeeContacts = () => {
                     <div className="flex items-center gap-4">
                         <Image src={"/avatars/default_avatar.webp"} alt="profile_default" width={32} height={32} className="rounded-full aspect-square object-cover"/>
                         <div>
-                            { employee.name }
+                            { employee.fullName }
                             <h3 className="text-xs text-zinc-400">{ employee.position }</h3>
                         </div>
                     </div>
