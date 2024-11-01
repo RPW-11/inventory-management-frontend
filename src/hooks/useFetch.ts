@@ -11,18 +11,26 @@ export function useFetchApi() {
     method: "POST" | "GET" | "PATCH" | "PUT" | "DELETE",
     accessToken?: string | null,
     path: string,
-    body?: BodyInit
+    body?: BodyInit,
+    isFormData?: boolean
   }): Promise<Response> => {
-    const { accessToken, path, method, body } = content;
+    const { accessToken, path, method, body, isFormData } = content;
+    const headers: HeadersInit = {};
 
+    if (!isFormData) {
+      headers["Content-Type"] = "application/json"
+    }
+  
+    if (content.accessToken) {
+      headers["Authorization"] = `Bearer ${content.accessToken}`
+    }
+    
     if (!accessToken) {
       // Public routes
       const res = await fetch(publicAPI + path, {
         method,
         body,
-        headers: {
-          "Content-Type": "application/json"
-        }
+        headers
       });
       return res;
     }
@@ -31,12 +39,8 @@ export function useFetchApi() {
     let res = await fetch(publicAPI + path, {
       method,
       body,
-      headers: {
-        "Authorization": `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
-      }
+      headers
     });
-
 
     if (res.status !== 401) {
         return res
@@ -59,10 +63,7 @@ export function useFetchApi() {
     res = await fetch(publicAPI + path, {
       method,
       body,
-      headers: {
-        "Authorization": `Bearer ${payload.accessToken}`,
-        "Content-Type": "application/json"
-      }
+      headers
     });
 
     return res;

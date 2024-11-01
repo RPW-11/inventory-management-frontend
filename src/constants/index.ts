@@ -39,8 +39,12 @@ export const LOGIN_FORM_SCHEMA = z.object({
     email: z.string().email({message: "Invalid email address"}),
     password: z.string().min(1, {message: "Password can't be empty"})
 })
+const phoneRegex = new RegExp(
+    /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+);
 export const SIGNUP_FORM_SCHEMA = z.object({
     fullName: z.string().min(3, {message: "Full name must be at least 3 characters long"}),
+    phoneNumber: z.string().regex(phoneRegex, "Invalid number!"),
     email: z.string().email({message: "Invalid email address"}),
     password: z.string().min(6, {message: "Password must be at least 6 chracters long"})
 })

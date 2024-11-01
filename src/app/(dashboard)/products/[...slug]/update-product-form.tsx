@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import WarehouseAddForm from "./warehouse-add";
 import ProductAdd from "./product-add";
-import { Product } from "@/types";
+import { AddProductRequest, Product } from "@/types";
 import { useState } from "react";
 import { useFetchApi } from "@/hooks/useFetch";
 import { useAuthStore } from "@/contexts/useStore";
@@ -42,33 +42,58 @@ const UpdateProductForm = () => {
         name: "warehouses"
     })
 
-    const onSubmitUpdate = async (values: z.infer<typeof productFormSchema>) => {
-        let combinedValues:any = {
-            ...values
-        }
-        if (product) {
-            combinedValues = {
-                productId: product.id,
-                ...values
-            }
-        }
+    const updateProduct = async (productRequestValues: AddProductRequest, productImages: File[]) => {
 
-        setIsLoading(true)
-        fetchApi({
+        let res = await fetchApi({
             method: "POST",
-            body: JSON.stringify(combinedValues),
+            body: JSON.stringify(productRequestValues),
             accessToken,
             path: "/inventory"
-        }).then(res => {
-            if (!res.ok) {
-                toast.error("Failed to add the product")
-                return
-            }
-            updateProductForm.reset(defaultValuesForm)
-            toast.success("Product has been added successfully", {
-                description: new Date().toISOString()
-            })
-        }).finally(() => setIsLoading(false))
+        })
+
+        if (!res.ok) {
+            const error = await res.json()
+            toast.error("Failed to add the product", { description: error.message })
+            return
+        }
+
+        const payload = await res.json()
+
+        const form = new FormData()
+        productImages.forEach(imgFile => {
+            form.append("product_imgs", imgFile)
+        })
+
+
+        res = await fetchApi({
+            method: "POST",
+            body: form,
+            path: `/product-images/${payload.productId}`,
+            isFormData: true,
+            accessToken
+        })
+
+        if (!res.ok) {
+            const error = await res.json()
+            toast.error("Failed to add the product's images", { description: error.message })
+            return
+        }
+
+        updateProductForm.reset(defaultValuesForm)
+        toast.success("Product has been added successfully", {
+            description: new Date().toISOString()
+        })
+    }
+
+    const onSubmitUpdate = (values: z.infer<typeof productFormSchema>) => {
+        let { productImages, ...productRequestValues } = values
+        if (product) {
+            (productRequestValues as AddProductRequest).productId = product.id
+        }
+        
+        setIsLoading(true)
+
+        updateProduct(productRequestValues, productImages).finally(() => setIsLoading(false))
     }
 
   return (
@@ -132,7 +157,7 @@ const UpdateProductForm = () => {
                     }/>
                 </FormControl>
                 <FormDescription>
-                    Upload the product images
+                    Only .png and .jpg or .jpeg are accepted
                 </FormDescription>
                 <FormMessage />
                 </FormItem>

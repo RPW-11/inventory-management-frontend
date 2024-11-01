@@ -42,6 +42,18 @@ export type ProductDetail = {
 
 
 // APIs related types
+type WarehouseProductRequest = {
+    warehouseId: string
+    productQuantity: number
+}
+export type AddProductRequest = {
+    productId?: string
+    productName: string
+    productDescription: string
+    productPrice: number
+    warehouses: WarehouseProductRequest[]
+}
+
 export type SignupResponse = {
     accessToken: string,
     message: string | null

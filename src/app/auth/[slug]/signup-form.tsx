@@ -18,7 +18,8 @@ const SignupForm = () => {
     defaultValues: {
         fullName: "",
         email: "",
-        password: ""
+        password: "",
+        phoneNumber: ""
     }
   })
   const router = useRouter()
@@ -54,7 +55,7 @@ const SignupForm = () => {
   return (
     <Form {...signupForm}>
       <form onSubmit={signupForm.handleSubmit(onSubmitSignup)} className="space-y-4">
-      <FormField
+        <FormField
           control={signupForm.control}
           name="fullName"
           render={({ field }) => (
@@ -65,6 +66,22 @@ const SignupForm = () => {
               </FormControl>
               <FormDescription>
                 Input your full name.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={signupForm.control}
+          name="phoneNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Phone Number</FormLabel>
+              <FormControl>
+                <Input placeholder="082235067876" {...field} />
+              </FormControl>
+              <FormDescription>
+                Input your phone number.
               </FormDescription>
               <FormMessage />
             </FormItem>
