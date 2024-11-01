@@ -35,6 +35,14 @@ export const SIDEBAR_MENU = [
         ]
     }
 ]
+export const PRODUCT_TABLE_HEADER = [
+    {value: "Product", isChecked: true},
+    {value: "Price", isChecked: true},
+    {value: "Total Stock", isChecked: true},
+    {value: "Warehouses", isChecked: true},
+    {value: "Created At", isChecked: true},
+    {value: "Updated At", isChecked: true}
+]
 export const LOGIN_FORM_SCHEMA = z.object({
     email: z.string().email({message: "Invalid email address"}),
     password: z.string().min(1, {message: "Password can't be empty"})

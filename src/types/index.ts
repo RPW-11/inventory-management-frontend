@@ -5,8 +5,8 @@ export type Product = {
     price: number
     stock?: number
     imageUrl?: string
-    createdAt?: Date
-    updatedAt?: Date
+    createdAt?: string
+    updatedAt?: string
 }
 
 export type User = {
@@ -22,8 +22,8 @@ export type Warehouse = {
     id: string,
     name: string,
     address: string,
-    createdAt?: Date,
-    updatedAt?: Date
+    createdAt?: string,
+    updatedAt?: string
 }
 
 export type InventoryDetail = {
@@ -40,6 +40,11 @@ export type ProductDetail = {
     imageUrls: string[]
 }
 
+// Component types
+export type ProductTableHeader = {
+    value: string,
+    isChecked: boolean
+}
 
 // APIs related types
 type WarehouseProductRequest = {

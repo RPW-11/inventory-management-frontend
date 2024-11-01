@@ -1,25 +1,14 @@
 "use client"
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BsBox } from "react-icons/bs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import Image from 'next/image';
+import ThreeDots from '@/components/three-dots';
 import { useEffect, useState } from 'react';
 import { useFetchApi } from '@/hooks/useFetch';
 import { useAuthStore } from '@/contexts/useStore';
 import { Product, ProductDetail } from '@/types';
 
-const ThreeDots = () => {
-    return (
-        <Button variant={"ghost"} size={"sm"} className="h-6">
-            <div className="flex items-center gap-0.5">
-                <div className="rounded-full bg-black w-[3px] h-[3px]"></div>
-                <div className="rounded-full bg-black w-[3px] h-[3px]"></div>
-                <div className="rounded-full bg-black w-[3px] h-[3px]"></div>
-            </div>
-        </Button>
-    )
-}  
 const ProductList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<string|null>(null)
