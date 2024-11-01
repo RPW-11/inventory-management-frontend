@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Product } from "@/types";
 import { UseFormReturn } from "react-hook-form";
 import SearchResults from "@/components/search-results";
+import { useDebouncedCallback } from 'use-debounce';
 import { useEffect, useState } from "react";
 import { useFetchApi } from "@/hooks/useFetch";
 import { useAuthStore } from "@/contexts/useStore";
@@ -23,22 +24,14 @@ interface Props {
 
 const ProductAdd = ({ updateProductForm, setProduct }: Props) => {
     const [products, setProducts] = useState<Product[]>([])
-    const [currentProduct, setCurrentProduct] = useState<Product>({
-        id: "",
-        name: "",
-        description: "",
-        price: 0
-    })
     const [searchProductString, setSearchProductString] = useState<string>("")
+    const [productName, setProductName] = useState<string>("")
     const fetchApi = useFetchApi()
     const { accessToken } = useAuthStore()
 
-    const onChangeProduct = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchProductString(event.target.value)
-        const newCurrProduct = currentProduct
-        newCurrProduct.name = event.target.value
-        setCurrentProduct(newCurrProduct)
-    }
+    const debouncedSetSearchProductString = useDebouncedCallback((searchTerm: string) => {
+        setSearchProductString(searchTerm);
+    }, 300);
 
     const onCreateProductClick = () => {
         setProducts([])
@@ -47,8 +40,8 @@ const ProductAdd = ({ updateProductForm, setProduct }: Props) => {
     }
 
     const onClickProduct = (product: Product) =>  {
+        setProductName(product.name)
         setProduct(product)
-        setCurrentProduct(product)
         setProducts([])
         setSearchProductString("")
     }
@@ -88,9 +81,10 @@ const ProductAdd = ({ updateProductForm, setProduct }: Props) => {
             <FormControl>
                 <Input placeholder="Enter or search your product..." 
                 {...field} 
-                value={currentProduct.name}
+                value={productName}
                 onChange={(e) => {
-                    onChangeProduct(e)
+                    setProductName(e.target.value)
+                    debouncedSetSearchProductString(e.target.value)
                     field.onChange("")
                 }}/>
             </FormControl>

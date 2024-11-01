@@ -86,9 +86,10 @@ const ProductList = () => {
                   <div className="relative w-10 h-10 rounded-lg overflow-hidden">
                     <Image 
                       src={product.imageUrl ? product.imageUrl : `/avatars/default_product.webp`} 
-                      alt='default product' 
-                      layout='fill'
-                      objectFit='cover'
+                      alt='default product'
+                      width={100}
+                      height={100}
+                      className='object-cover w-full h-full'
                     />
                   </div>
                     <div>

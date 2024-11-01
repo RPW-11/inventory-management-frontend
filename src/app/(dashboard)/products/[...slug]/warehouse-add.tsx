@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useFetchApi } from "@/hooks/useFetch";
 import { useAuthStore } from "@/contexts/useStore";
+import { useDebouncedCallback } from "use-debounce";
 
 interface Props {
     updateProductForm: UseFormReturn<{
@@ -24,21 +25,14 @@ interface Props {
 const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
     const [searchWarehouseString, setSearchWarehouseString] = useState<string>("")
     const [searchResults, setSearchResults] = useState<Warehouse[]>([])
-    const [warehouse, setWarehouse] = useState<Warehouse>({
-        id: "",
-        name: "",
-        address: ""
-    })
+    const [warehouseName, setWarehouseName] = useState<string>("")
     const [error, setError] = useState<string|null>(null)
     const fetchApi = useFetchApi()
     const { accessToken } = useAuthStore()
 
-    const onChangeWarehouse = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchWarehouseString(event.target.value)
-        const newWarehouse = warehouse
-        newWarehouse.name = event.target.value
-        setWarehouse(newWarehouse)
-    }
+    const debouncedSetSearchWarehouseString = useDebouncedCallback((searchTerm: string) => {
+        setSearchWarehouseString(searchTerm);
+    }, 300);
 
     const searchWarehouse = async () => {
         if (searchWarehouseString !== "" ){
@@ -60,7 +54,7 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
     }
 
     const onClickWarehouse = (warehouse: Warehouse) =>  {
-        setWarehouse(warehouse)
+        setWarehouseName(warehouse.name)
         setSearchResults([])
     }
 
@@ -86,10 +80,11 @@ const WarehouseAddForm = ({ updateProductForm, index }: Props) => {
                 <FormControl>
                     <Input placeholder="Enter warehouse..." 
                     {...field} 
-                    value={warehouse.name}
+                    value={warehouseName}
                     type="text" 
                     onChange={(e) => {
-                        onChangeWarehouse(e)
+                        setWarehouseName(e.target.value)
+                        debouncedSetSearchWarehouseString(e.target.value)
                         field.onChange("")
                     }}/>
                 </FormControl>
