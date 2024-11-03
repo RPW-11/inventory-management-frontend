@@ -3,18 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation";
 import { MdAddCircle } from "react-icons/md";
-import FilterTable from "./filter-table";
-import ShowTable from "./show-table";
-import ThreeDots from "@/components/three-dots";
-import Image from "next/image";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { BsBox } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { ProductDetail, ProductTableHeader } from "@/types";
 import { useAuthStore } from "@/contexts/useStore";
 import { useFetchApi } from "@/hooks/useFetch";
 import { PRODUCT_TABLE_HEADER as productTableHeader } from "@/constants";
 import CellProductTable from "./cell-product-table";
+import FilterTableButton from "./filter-table-button";
+import ShowTableButton from "./show-table-button";
+import ProductOptionsButton from "./product-options-button";
 
 const ProductTable = () => {
     const { push } = useRouter()
@@ -51,8 +49,8 @@ const ProductTable = () => {
                 <MdAddCircle/>
                 Add
             </Button>
-            <FilterTable/>
-            <ShowTable currentHeader={currentHeader} setCurrentHeader={setCurrentHeader}/>
+            <FilterTableButton/>
+            <ShowTableButton currentHeader={currentHeader} setCurrentHeader={setCurrentHeader}/>
             <Input placeholder="Search product by name..." className="md:w-64 text-xs rounded-lg bg-zinc-100 focus:bg-white shadow-none border-none"/>
         </div>
         {isLoading ? 
@@ -79,7 +77,7 @@ const ProductTable = () => {
                             return <CellProductTable key={header.value} headerType={header.value} product={product}/>
                         }
                     })}
-                    <TableCell align="right"><ThreeDots/></TableCell>
+                    <TableCell align="right"><ProductOptionsButton productDetail={product}/></TableCell>
                 </TableRow>
             ))}
             </TableBody>

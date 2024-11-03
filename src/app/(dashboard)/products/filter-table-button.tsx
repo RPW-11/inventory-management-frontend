@@ -2,7 +2,7 @@ import { MdFilterList } from "react-icons/md";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button";
 
-const FilterTable = () => {
+const FilterTableButton = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -18,4 +18,4 @@ const FilterTable = () => {
   )
 }
 
-export default FilterTable
+export default FilterTableButton

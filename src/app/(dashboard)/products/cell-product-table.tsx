@@ -25,7 +25,7 @@ const CellProductTable = ({ headerType, product }: { headerType: string, product
             </TableCell>
         )
     case "Price":
-        return (<TableCell>Rp. { product.product.price }</TableCell>)
+        return (<TableCell>Rp. { product.product.price.toLocaleString() }</TableCell>)
     case "Total Stock":
         return (
             <TableCell >
