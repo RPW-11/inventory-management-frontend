@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MdAddCircle } from "react-icons/md";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ import CellProductTable from "./cell-product-table";
 import FilterTableButton from "./filter-table-button";
 import ShowTableButton from "./show-table-button";
 import ProductOptionsButton from "./product-options-button";
+import { useDebouncedCallback } from "use-debounce";
 
 const ProductTable = () => {
     const { push } = useRouter()
@@ -20,12 +21,30 @@ const ProductTable = () => {
     const [products, setProducts] = useState<ProductDetail[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const { accessToken } = useAuthStore()
+    const { replace } = useRouter()
+
     const fetchApi = useFetchApi()
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
+    const productName = searchParams.get("name") || ""
+
+    const handleSearchProduct = useDebouncedCallback((searchTerm: string) => {
+        const params = new URLSearchParams(searchParams)
+        
+        if (searchTerm !== "") {
+            params.set("name", searchTerm)
+        } else {
+            params.delete("name")
+        }
+
+        replace(`${pathname}?${params.toString()}`)
+    }, 300)
 
     const fetchProductDetails = async () => {
+        setIsLoading(true)
         const res = await fetchApi({
           method: "GET",
-          path: "/product-inventory",
+          path: `/product-inventory` + (productName !== "" ? `?name=${productName}` : ""),
           accessToken
         })
         const payload = await res.json()
@@ -40,7 +59,7 @@ const ProductTable = () => {
     
       useEffect(() => {
         fetchProductDetails()
-      },[])
+      },[searchParams])
 
   return (
     <div className="py-4">
@@ -51,7 +70,7 @@ const ProductTable = () => {
             </Button>
             <FilterTableButton/>
             <ShowTableButton currentHeader={currentHeader} setCurrentHeader={setCurrentHeader}/>
-            <Input placeholder="Search product by name..." className="md:w-64 text-xs rounded-lg bg-zinc-100 focus:bg-white shadow-none border-none"/>
+            <Input defaultValue={productName} onChange={(e) => handleSearchProduct(e.target.value)} placeholder="Search product by name..." className="md:w-64 text-xs rounded-lg bg-zinc-100 focus:bg-white shadow-none border-none"/>
         </div>
         {isLoading ? 
         <div className="rounded-lg bg-zinc-200 h-48 w-full animate-pulse mt-7 mb-4"></div>
