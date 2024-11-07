@@ -5,13 +5,17 @@ import React from 'react'
 import { BsBox } from 'react-icons/bs'
 
 const CellProductTable = ({ headerType, product }: { headerType: string, product: ProductDetail }) => {
+    const stock = product.inventories.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue.productQuantity
+    }, 0)
+
   switch(headerType) {
     case "Product":
         return (
             <TableCell className='flex gap-4 items-center'>
                 <div className="relative w-10 h-10 rounded-lg overflow-hidden">
                     <Image 
-                    src={product.imageUrls ? product.imageUrls[0] : `/avatars/default_product.webp`} 
+                    src={product.imageUrls.length > 0 ? product.imageUrls[0] : `/avatars/default_product.webp`} 
                     alt='default product'
                     width={100}
                     height={100}
@@ -29,7 +33,7 @@ const CellProductTable = ({ headerType, product }: { headerType: string, product
     case "Total Stock":
         return (
             <TableCell >
-                <div className="flex items-center gap-2"><BsBox/> { product.inventories[0].productQuantity }</div>
+                <div className="flex items-center gap-2"><BsBox/> { stock }</div>
             </TableCell>
         )
     case "Warehouses":

@@ -14,6 +14,7 @@ import FilterTableButton from "./filter-table-button";
 import ShowTableButton from "./show-table-button";
 import ProductOptionsButton from "./product-options-button";
 import { useDebouncedCallback } from "use-debounce";
+import { toast } from "sonner";
 
 const ProductTable = () => {
     const { push } = useRouter()
@@ -49,6 +50,9 @@ const ProductTable = () => {
         })
         const payload = await res.json()
         if (!res.ok) {
+            toast.error("Error fetching the products' detail", {
+                description: payload.message
+            })
           setIsLoading(false)
           return
         }
